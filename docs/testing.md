@@ -10,7 +10,7 @@ anything that touches a device.
 | 3 | KOReader-hosted | `scripts/test-koreader.sh` | a built KOReader | 92 passing |
 | 4 | Emulator smoke | `spec/smoke/emulator_checklist.md` | a built KOReader | manual |
 | 5 | Karakeep integration | `scripts/test-integration.sh` | a test Karakeep | 21 passing |
-| 6 | Real device | manual | a Kobo | done on a Kobo |
+| 6 | Real device | manual | a Kobo | done on a Kobo Libra Colour |
 
 There is no KOReader plugin SDK, so these are deliberately combined: KaraBridge
 owns layers 1, 2 and 5; layers 3 and 4 borrow KOReader's own infrastructure.
@@ -265,7 +265,8 @@ an update that could not unpack on the KOReader most people run, a prompt to
 connect Wi-Fi on a device already connected. Each was invisible to a green
 suite.
 
-Run on a real Kobo before any release:
+Run on a real device before any release. So far that means a Kobo Libra
+Colour; another model may well behave differently:
 
 installation by folder copy · settings file discovery · folder picker · touch
 interaction · EPUB import · PDF highlight export · EPUB highlight export · WLAN

@@ -1,5 +1,31 @@
 # KaraBridge
 
+> ### Before you start
+>
+> **This was built with an AI coding agent.** I am a software developer, but I
+> know very little Lua, so the code was written by an agent working from my
+> direction and review rather than typed by me. Read it with that in mind — and
+> please do read it, since you are about to run it on your reader.
+>
+> **It stands on two existing projects.** KaraBridge is a mix of the ideas in
+> [davepwsmith/karako](https://github.com/davepwsmith/karako) and
+> [AlgusDark/karakeep.koplugin](https://github.com/AlgusDark/karakeep.koplugin),
+> both of which were used as references throughout. The first solves getting
+> Karakeep articles onto a reader and reading status back; the second solves
+> exporting your own books as Karakeep cards. KaraBridge does both halves in one
+> plugin. No code was copied from either — both are AGPL-3.0, as is this — but a
+> good deal of the reasoning came from reading them, and neither author had
+> anything to do with this repository.
+>
+> **Tested on a Kobo Libra Colour**, which is the device I use it on daily.
+> Nothing else has been tried on hardware.
+>
+> **If something breaks, please open an issue and be concrete:** what you did,
+> what happened, what you expected, your KOReader version and device, and the
+> relevant part of `crash.log`. You are welcome to have an AI agent write the
+> report for you — a clear, reproducible issue is far more useful than a
+> hand-typed vague one.
+
 A KOReader plugin that bridges [Karakeep](https://karakeep.app) and KOReader in
 both directions.
 
@@ -360,10 +386,11 @@ shape the updater expects.
   cryptographic digest and is not used as one.
 - **`karabridge.conf` holds the API key in plain text.** Give the device its
   own Karakeep key so it can be revoked on its own.
-- **Only one device has been tested.** Developed against the KOReader emulator
-  and a live Karakeep, and verified end to end on a Kobo. Other devices differ
-  in storage paths, memory and touch behaviour, and building an image-heavy
-  article's EPUB in Lua is the main performance unknown on a slower one.
+- **Only one device has been tested:** a Kobo Libra Colour. Developed against
+  the KOReader emulator and a live Karakeep, then verified end to end on that
+  device. Others differ in storage paths, memory and touch behaviour, and
+  building an image-heavy article's EPUB in Lua is the main performance unknown
+  on a slower one.
 
 ## Coexistence
 
@@ -408,13 +435,18 @@ have gone the other way:
 
 ## Licence and attribution
 
-KaraBridge is **AGPL-3.0**, the same licence as KOReader, which it is built
-against, and Karakeep, which it interoperates with. See [`LICENSE`](LICENSE).
+KaraBridge is **AGPL-3.0** — see [`LICENSE`](LICENSE) — matching KOReader, which
+it is built against, Karakeep, which it interoperates with, and both projects it
+took its bearings from:
 
-No code has been copied from either. The modules here were written from an
-understanding of the published behaviour of Karakeep's HTTP API and KOReader's
-plugin interfaces; where a decision follows from something in those, the module
-comment says which file or schema it was checked against.
+- [davepwsmith/karako](https://github.com/davepwsmith/karako) — AGPL-3.0
+- [AlgusDark/karakeep.koplugin](https://github.com/AlgusDark/karakeep.koplugin) — AGPL-3.0
 
-KOReader and Karakeep are the work of their own authors and are not affiliated
-with this project.
+**No code has been copied from any of them.** The modules here were written from
+an understanding of published behaviour: Karakeep's HTTP API, KOReader's plugin
+interfaces, and the approaches those two plugins take. Where a decision follows
+from something specific, the module comment says which file or schema it was
+checked against.
+
+KOReader, Karakeep and the authors of both plugins above are not affiliated with
+this project and are not responsible for it.
