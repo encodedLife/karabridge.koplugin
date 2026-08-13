@@ -157,7 +157,8 @@ happened to carry a note. See the CHANGELOG.
 
 ## What this does not prove
 
-- **Anything about a real Kobo.** This ran in the emulator on x86-64. Storage
+- **Anything about a real device.** This scenario ran in the emulator on
+  x86-64, and proves nothing about hardware on its own. Storage
   paths, memory, touch behaviour and CPU speed all differ.
 - **That the underline lands in the right place in Karakeep's web reader.** The
   offsets are computed the way the reader computes them and the lengths match,

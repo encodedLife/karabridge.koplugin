@@ -360,10 +360,10 @@ shape the updater expects.
   cryptographic digest and is not used as one.
 - **`karabridge.conf` holds the API key in plain text.** Give the device its
   own Karakeep key so it can be revoked on its own.
-- **Device coverage is narrow.** Developed against the KOReader emulator and a
-  live Karakeep, and used on a Kobo. Other devices differ in storage paths,
-  memory and touch behaviour, and building an image-heavy article's EPUB in Lua
-  is the main performance unknown.
+- **Only one device has been tested.** Developed against the KOReader emulator
+  and a live Karakeep, and verified end to end on a Kobo. Other devices differ
+  in storage paths, memory and touch behaviour, and building an image-heavy
+  article's EPUB in Lua is the main performance unknown on a slower one.
 
 ## Coexistence
 

@@ -6,11 +6,11 @@ anything that touches a device.
 | # | Layer | Command | Needs | Current |
 |---|---|---|---|---|
 | 1 | Static checks | `scripts/check.sh` | luac, luacheck, shellcheck, stylua | clean |
-| 2 | Unit | `scripts/test-unit.sh` | any Lua 5.1 | 676 passing |
-| 3 | KOReader-hosted | `scripts/test-koreader.sh` | a built KOReader | 77 passing |
+| 2 | Unit | `scripts/test-unit.sh` | any Lua 5.1 | 834 passing |
+| 3 | KOReader-hosted | `scripts/test-koreader.sh` | a built KOReader | 92 passing |
 | 4 | Emulator smoke | `spec/smoke/emulator_checklist.md` | a built KOReader | manual |
 | 5 | Karakeep integration | `scripts/test-integration.sh` | a test Karakeep | 21 passing |
-| 6 | Real device | manual | a Kobo | **not done — the release blocker** |
+| 6 | Real device | manual | a Kobo | done on a Kobo |
 
 There is no KOReader plugin SDK, so these are deliberately combined: KaraBridge
 owns layers 1, 2 and 5; layers 3 and 4 borrow KOReader's own infrastructure.
@@ -259,7 +259,13 @@ only one that can.
 
 ## 6. Real-device tests
 
-Before any release, on a real Kobo:
+Nothing above replaces this layer, and it has repeatedly found what the others
+could not: the annotations KOReader holds in memory rather than in the sidecar,
+an update that could not unpack on the KOReader most people run, a prompt to
+connect Wi-Fi on a device already connected. Each was invisible to a green
+suite.
+
+Run on a real Kobo before any release:
 
 installation by folder copy · settings file discovery · folder picker · touch
 interaction · EPUB import · PDF highlight export · EPUB highlight export · WLAN

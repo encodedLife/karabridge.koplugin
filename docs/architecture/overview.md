@@ -319,5 +319,5 @@ What each area covers:
    and corruption recovery.
 5. **Automation** — sync on Wi-Fi connect, Dispatcher actions.
 
-What remains: testing on a real Kobo. Everything else has been verified in the
-emulator and against a live Karakeep.
+All of it is verified in the emulator, against a live Karakeep, and on a Kobo.
+Devices other than that Kobo remain untested.
