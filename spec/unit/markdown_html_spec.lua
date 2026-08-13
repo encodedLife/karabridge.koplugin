@@ -1,0 +1,126 @@
+require("spec.support.helper")
+
+local MarkdownHtml = require("karabridge.formats.markdown_html")
+
+describe("MarkdownHtml.render", function()
+    it("renders a paragraph", function()
+        assert.equals("<p>Hello.</p>", MarkdownHtml.render("Hello."))
+    end)
+
+    it("renders headings up to level six and clamps beyond", function()
+        assert.equals("<h1>Title</h1>", MarkdownHtml.render("# Title"))
+        assert.equals("<h6>Deep</h6>", MarkdownHtml.render("###### Deep"))
+        assert.equals("<h6>Too deep</h6>", MarkdownHtml.render("######## Too deep"))
+    end)
+
+    it("renders a bulleted list and closes it", function()
+        local html = MarkdownHtml.render("- one\n- two\n\nafter")
+        assert.matches("<ul>", html)
+        assert.matches("<li>one</li>", html)
+        assert.matches("<li>two</li>", html)
+        assert.matches("</ul>", html)
+        assert.matches("<p>after</p>", html)
+    end)
+
+    it("renders a numbered list", function()
+        local html = MarkdownHtml.render("1. one\n2. two")
+        assert.matches("<ol>", html)
+        assert.matches("</ol>", html)
+        assert.matches("<li>one</li>", html)
+    end)
+
+    it("closes one list kind before opening the other", function()
+        local html = MarkdownHtml.render("- bullet\n1. number")
+        assert.matches("</ul>", html)
+        assert.matches("<ol>", html)
+    end)
+
+    it("closes an unterminated list at the end of the document", function()
+        local html = MarkdownHtml.render("- one")
+        assert.matches("</ul>", html)
+    end)
+
+    it("renders a block quote", function()
+        assert.equals("<blockquote>quoted</blockquote>", MarkdownHtml.render("> quoted"))
+    end)
+
+    it("renders a horizontal rule", function()
+        assert.equals("<hr/>", MarkdownHtml.render("---"))
+        assert.equals("<hr/>", MarkdownHtml.render("***"))
+    end)
+
+    it("does not mistake an em-dash paragraph for a rule", function()
+        assert.matches("<p>", MarkdownHtml.render("-- not a rule"))
+    end)
+
+    describe("inline spans", function()
+        it("renders bold, italic and code", function()
+            assert.matches("<strong>b</strong>", MarkdownHtml.render("**b**"))
+            assert.matches("<strong>b</strong>", MarkdownHtml.render("__b__"))
+            assert.matches("<em>i</em>", MarkdownHtml.render("*i*"))
+            assert.matches("<code>c</code>", MarkdownHtml.render("`c`"))
+        end)
+
+        it("renders a link", function()
+            assert.matches('<a href="https://x">label</a>', MarkdownHtml.render("[label](https://x)"))
+        end)
+
+        it("renders an image, and distinguishes it from a link", function()
+            local html = MarkdownHtml.render("![alt](https://x/a.png)")
+            assert.matches('<img src="https://x/a.png" alt="alt"/>', html)
+            assert.is_nil(html:find("<a ", 1, true))
+        end)
+
+        it("emits no empty alt attribute", function()
+            -- crengine rewrites alt="" to a bare alt, which is not valid XML.
+            local html = MarkdownHtml.render("![](https://x/a.png)")
+            assert.is_nil(html:find("alt", 1, true))
+        end)
+    end)
+
+    describe("fenced code", function()
+        it("wraps the block in pre", function()
+            local html = MarkdownHtml.render("```\nlocal x = 1\n```")
+            assert.matches("<pre>", html)
+            assert.matches("</pre>", html)
+            assert.matches("local x = 1", html)
+        end)
+
+        it("does not interpret markdown inside a fence", function()
+            local html = MarkdownHtml.render("```\n# not a heading\n**not bold**\n```")
+            assert.is_nil(html:find("<h1>", 1, true))
+            assert.is_nil(html:find("<strong>", 1, true))
+        end)
+
+        it("closes an unterminated fence rather than emitting unbalanced markup", function()
+            local html = MarkdownHtml.render("```\nfoo")
+            local _, opens = html:gsub("<pre>", "")
+            local _, closes = html:gsub("</pre>", "")
+            assert.equals(opens, closes)
+        end)
+    end)
+
+    describe("escaping", function()
+        it("escapes HTML in the source, rather than passing it through", function()
+            -- The markdown comes from a crawler and is not to be trusted with
+            -- markup.
+            local html = MarkdownHtml.render("<script>alert(1)</script>")
+            assert.is_nil(html:find("<script>", 1, true))
+            assert.matches("&lt;script&gt;", html)
+        end)
+
+        it("escapes an ampersand", function()
+            assert.matches("a &amp; b", MarkdownHtml.render("a & b"))
+        end)
+    end)
+
+    it("handles CRLF line endings", function()
+        local html = MarkdownHtml.render("# Title\r\ntext")
+        assert.matches("<h1>Title</h1>", html)
+        assert.matches("<p>text</p>", html)
+    end)
+
+    it("returns an empty string for a non-string", function()
+        assert.equals("", MarkdownHtml.render(nil))
+    end)
+end)

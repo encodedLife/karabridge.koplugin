@@ -1,0 +1,25 @@
+# Reference repositories are local research checkouts with their own history.
+# They must never be committed here, and nothing at runtime may depend on them.
+
+
+# Local environment and secrets. Never commit an API token.
+.envrc
+.env
+*.local
+karabridge.conf
+spec/integration/.env
+
+# Test and build artefacts.
+spec/run/
+/tmp/
+*.log
+luacov.*.out
+
+# Editor and OS noise.
+*.swp
+*~
+.DS_Store
+*:Zone.Identifier
+
+# Release artefacts, built by scripts/release.sh
+dist/
